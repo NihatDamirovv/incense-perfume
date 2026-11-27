@@ -1,0 +1,1 @@
+{"name":"incense-ec2-runtime","private":true,"type":"module","dependencies":{"miniflare":"4.20260515.0"},"overrides":{"miniflare":{"sharp":"0.35.4"}}}

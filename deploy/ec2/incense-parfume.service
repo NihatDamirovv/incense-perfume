@@ -1,0 +1,25 @@
+[Unit]
+Description=Incense Parfume storefront and API
+After=network.target
+
+[Service]
+Type=simple
+User=incense
+Group=incense
+WorkingDirectory=/opt/incense-parfume
+ExecStart=/usr/bin/node /opt/incense-parfume/server.mjs
+Restart=on-failure
+RestartSec=5
+Environment=NODE_ENV=production
+Environment=NODE_OPTIONS=--max-old-space-size=256
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/incense-parfume
+MemoryMax=512M
+TasksMax=128
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

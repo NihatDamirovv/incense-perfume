@@ -1,0 +1,1997 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Incense Parfume API",
+    "version": "1.1.0",
+    "description": "Private Site access is separate from API admin authorization. Admin writes use a server-configured bearer token."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:5173",
+      "description": "Local development"
+    },
+    {
+      "url": "https://noir-parfum-nd.tawnyisle64.chatgpt.site",
+      "description": "Private hosted Site"
+    }
+  ],
+  "paths": {
+    "/api/products": {
+      "get": {
+        "summary": "Filter and paginate products",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          },
+          {
+            "name": "brand",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          },
+          {
+            "name": "gender",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          },
+          {
+            "name": "origin",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          },
+          {
+            "name": "season",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          },
+          {
+            "name": "available",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          },
+          {
+            "name": "minPrice",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            },
+            "description": ""
+          },
+          {
+            "name": "maxPrice",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            },
+            "description": ""
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "default, price_asc, price_desc, name"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            },
+            "description": "Starts at 1"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            },
+            "description": "1–100; default 12"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Product"
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "integer"
+                        },
+                        "limit": {
+                          "type": "integer"
+                        },
+                        "total": {
+                          "type": "integer"
+                        },
+                        "pages": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Admin token required"
+          },
+          "403": {
+            "description": "Origin rejected"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal error"
+          },
+          "503": {
+            "description": "Service not configured"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create product",
+        "security": [
+          {
+            "AdminToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Product"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Admin token required"
+          },
+          "403": {
+            "description": "Origin rejected"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal error"
+          },
+          "503": {
+            "description": "Service not configured"
+          }
+        }
+      }
+    },
+    "/api/products/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get product",
+        "responses": {
+          "200": {
+            "description": "Product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Product"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Admin token required"
+          },
+          "403": {
+            "description": "Origin rejected"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal error"
+          },
+          "503": {
+            "description": "Service not configured"
+          }
+        }
+      },
+      "put": {
+        "summary": "Replace product",
+        "security": [
+          {
+            "AdminToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Product"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Admin token required"
+          },
+          "403": {
+            "description": "Origin rejected"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal error"
+          },
+          "503": {
+            "description": "Service not configured"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete product",
+        "security": [
+          {
+            "AdminToken": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Admin token required"
+          },
+          "403": {
+            "description": "Origin rejected"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal error"
+          },
+          "503": {
+            "description": "Service not configured"
+          }
+        }
+      }
+    },
+    "/api/brands": {
+      "get": {
+        "summary": "Brands and product counts",
+        "responses": {
+          "200": {
+            "description": "Brand list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "count": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Admin token required"
+          },
+          "403": {
+            "description": "Origin rejected"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal error"
+          },
+          "503": {
+            "description": "Service not configured"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create an independent brand",
+        "security": [
+          {
+            "AdminToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "name",
+                  "description",
+                  "image",
+                  "featured",
+                  "sortOrder"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 150
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 2000
+                  },
+                  "image": {
+                    "type": "string"
+                  },
+                  "featured": {
+                    "type": "boolean"
+                  },
+                  "sortOrder": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9999
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created brand"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Admin token required"
+          },
+          "403": {
+            "description": "Origin rejected"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Duplicate name"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal error"
+          },
+          "503": {
+            "description": "Service not configured"
+          }
+        }
+      }
+    },
+    "/api/upload": {
+      "post": {
+        "summary": "Upload JPG, PNG or WebP (max 5 MB)",
+        "security": [
+          {
+            "AdminToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Image URL",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Admin token required"
+          },
+          "403": {
+            "description": "Origin rejected"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal error"
+          },
+          "503": {
+            "description": "Service not configured"
+          }
+        }
+      }
+    },
+    "/api/images/{key}": {
+      "get": {
+        "summary": "Read uploaded image",
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Image bytes",
+            "content": {
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/jpeg": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/webp": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Image not found"
+          }
+        }
+      }
+    },
+    "/api/auth/check": {
+      "post": {
+        "summary": "Verify admin token",
+        "security": [
+          {
+            "AdminToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authenticated"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Admin token required"
+          },
+          "403": {
+            "description": "Origin rejected"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal error"
+          },
+          "503": {
+            "description": "Service not configured"
+          }
+        }
+      }
+    },
+    "/api/admin/audit": {
+      "get": {
+        "summary": "Latest 100 audit records",
+        "security": [
+          {
+            "AdminToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Audit entries"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Admin token required"
+          },
+          "403": {
+            "description": "Origin rejected"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal error"
+          },
+          "503": {
+            "description": "Service not configured"
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "summary": "Database availability and R2 binding configuration",
+        "responses": {
+          "200": {
+            "description": "Healthy"
+          },
+          "503": {
+            "description": "Unavailable"
+          }
+        }
+      }
+    },
+    "/api/catalog": {
+      "get": {
+        "summary": "UI compatibility: complete catalog",
+        "responses": {
+          "200": {
+            "description": "Products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Admin token required"
+          },
+          "403": {
+            "description": "Origin rejected"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal error"
+          },
+          "503": {
+            "description": "Service not configured"
+          }
+        }
+      },
+      "post": {
+        "summary": "UI compatibility: create or update based on id",
+        "security": [
+          {
+            "AdminToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Saved"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Admin token required"
+          },
+          "403": {
+            "description": "Origin rejected"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal error"
+          },
+          "503": {
+            "description": "Service not configured"
+          }
+        }
+      },
+      "delete": {
+        "summary": "UI compatibility: delete by id in body",
+        "security": [
+          {
+            "AdminToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Deleted"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Admin token required"
+          },
+          "403": {
+            "description": "Origin rejected"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal error"
+          },
+          "503": {
+            "description": "Service not configured"
+          }
+        }
+      }
+    },
+    "/api/brands/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "put": {
+        "summary": "Update brand and rename linked products",
+        "security": [
+          {
+            "AdminToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "name",
+                  "description",
+                  "image",
+                  "featured",
+                  "sortOrder"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 150
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 2000
+                  },
+                  "image": {
+                    "type": "string"
+                  },
+                  "featured": {
+                    "type": "boolean"
+                  },
+                  "sortOrder": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9999
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated brand"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Admin token required"
+          },
+          "403": {
+            "description": "Origin rejected"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Duplicate brand name"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal error"
+          },
+          "503": {
+            "description": "Service not configured"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete empty brand",
+        "security": [
+          {
+            "AdminToken": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Admin token required"
+          },
+          "403": {
+            "description": "Origin rejected"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Brand still has products"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal error"
+          },
+          "503": {
+            "description": "Service not configured"
+          }
+        }
+      }
+    },
+    "/api/settings": {
+      "get": {
+        "summary": "Get public site settings and revision",
+        "responses": {
+          "200": {
+            "description": "Site settings"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Admin token required"
+          },
+          "403": {
+            "description": "Origin rejected"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal error"
+          },
+          "503": {
+            "description": "Service not configured"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update site settings with optimistic concurrency",
+        "security": [
+          {
+            "AdminToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data",
+                  "revision"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "siteName",
+                      "tagline",
+                      "logoImage",
+                      "faviconImage",
+                      "seoTitle",
+                      "seoDescription",
+                      "showAnnouncement",
+                      "announcement",
+                      "navCollection",
+                      "navBrands",
+                      "navAbout",
+                      "navContact",
+                      "showHero",
+                      "heroEyebrow",
+                      "heroTitle",
+                      "heroEmphasis",
+                      "heroDescription",
+                      "heroButton",
+                      "heroBadge",
+                      "heroLocation",
+                      "heroCaption",
+                      "heroBottleName",
+                      "heroImage",
+                      "heroImageAlt",
+                      "heroArtLabel",
+                      "heroArtType",
+                      "showBrands",
+                      "brandsHeading",
+                      "collectionEyebrow",
+                      "collectionTitle",
+                      "collectionDescription",
+                      "sidebarCaption",
+                      "sidebarQuote",
+                      "showDemoNote",
+                      "demoNote",
+                      "showAbout",
+                      "aboutEyebrow",
+                      "aboutTitle",
+                      "aboutEmphasis",
+                      "aboutText",
+                      "aboutTextExtra",
+                      "aboutButton",
+                      "aboutImage",
+                      "showContact",
+                      "contactTitle",
+                      "contactText",
+                      "address",
+                      "phone",
+                      "email",
+                      "instagram",
+                      "whatsappNumber",
+                      "orderIntro",
+                      "orderButton",
+                      "cartButton",
+                      "checkoutButton",
+                      "footerText",
+                      "showAdminLink"
+                    ],
+                    "properties": {
+                      "siteName": {
+                        "type": "string",
+                        "default": "Incense Parfume"
+                      },
+                      "tagline": {
+                        "type": "string",
+                        "default": "ƏTİR BUTİKİ"
+                      },
+                      "logoImage": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "faviconImage": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "seoTitle": {
+                        "type": "string",
+                        "default": "Incense Parfume — Parfüm mağazası"
+                      },
+                      "seoDescription": {
+                        "type": "string",
+                        "default": "Seçilmiş parfümlər. Öz ətrinizi kəşf edin."
+                      },
+                      "showAnnouncement": {
+                        "type": "boolean",
+                        "default": true
+                      },
+                      "announcement": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "navCollection": {
+                        "type": "string",
+                        "default": "Kolleksiya"
+                      },
+                      "navBrands": {
+                        "type": "string",
+                        "default": "Brendlər"
+                      },
+                      "navAbout": {
+                        "type": "string",
+                        "default": "Haqqımızda"
+                      },
+                      "navContact": {
+                        "type": "string",
+                        "default": "Əlaqə"
+                      },
+                      "showHero": {
+                        "type": "boolean",
+                        "default": true
+                      },
+                      "heroEyebrow": {
+                        "type": "string",
+                        "default": "PARFÜM MAĞAZASI"
+                      },
+                      "heroTitle": {
+                        "type": "string",
+                        "default": "Parfüm"
+                      },
+                      "heroEmphasis": {
+                        "type": "string",
+                        "default": "kolleksiyası"
+                      },
+                      "heroDescription": {
+                        "type": "string",
+                        "default": "Avropa və ərəb ətirlərini seçin."
+                      },
+                      "heroButton": {
+                        "type": "string",
+                        "default": "Kolleksiyanı kəşf et"
+                      },
+                      "heroBadge": {
+                        "type": "string",
+                        "default": "NİŞ & DİZAYNER PARFÜMLƏRİ"
+                      },
+                      "heroLocation": {
+                        "type": "string",
+                        "default": "BAKI, AZƏRBAYCAN"
+                      },
+                      "heroCaption": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "heroBottleName": {
+                        "type": "string",
+                        "default": "L'ESSENCE"
+                      },
+                      "heroImage": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "heroImageAlt": {
+                        "type": "string",
+                        "default": "Ətir kolleksiyası"
+                      },
+                      "heroArtLabel": {
+                        "type": "string",
+                        "default": "INCENSE PARFUME"
+                      },
+                      "heroArtType": {
+                        "type": "string",
+                        "default": "EAU DE PARFUM"
+                      },
+                      "showBrands": {
+                        "type": "boolean",
+                        "default": true
+                      },
+                      "brandsHeading": {
+                        "type": "string",
+                        "default": "ƏTİR DÜNYASININ İMZALARI"
+                      },
+                      "collectionEyebrow": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "collectionTitle": {
+                        "type": "string",
+                        "default": "Parfümlər"
+                      },
+                      "collectionDescription": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "sidebarCaption": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "sidebarQuote": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "showDemoNote": {
+                        "type": "boolean",
+                        "default": true
+                      },
+                      "demoNote": {
+                        "type": "string",
+                        "default": "Nümunə kolleksiya: ilkin qiymətlər və flakon təsvirləri təqdimat üçündür."
+                      },
+                      "showAbout": {
+                        "type": "boolean",
+                        "default": true
+                      },
+                      "aboutEyebrow": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "aboutTitle": {
+                        "type": "string",
+                        "default": "Haqqımızda"
+                      },
+                      "aboutEmphasis": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "aboutText": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "aboutTextExtra": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "aboutButton": {
+                        "type": "string",
+                        "default": "Kolleksiyaya bax"
+                      },
+                      "aboutImage": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "showContact": {
+                        "type": "boolean",
+                        "default": true
+                      },
+                      "contactTitle": {
+                        "type": "string",
+                        "default": "Bizimlə əlaqə"
+                      },
+                      "contactText": {
+                        "type": "string",
+                        "default": "Ətir seçiminizdə sizə kömək edək."
+                      },
+                      "address": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "phone": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "email": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "instagram": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "whatsappNumber": {
+                        "type": "string",
+                        "default": "994507790084"
+                      },
+                      "orderIntro": {
+                        "type": "string",
+                        "default": "Salam! Aşağıdakı parfümləri sifariş etmək istəyirəm:"
+                      },
+                      "orderButton": {
+                        "type": "string",
+                        "default": "Sifariş et"
+                      },
+                      "cartButton": {
+                        "type": "string",
+                        "default": "Səbətə əlavə et"
+                      },
+                      "checkoutButton": {
+                        "type": "string",
+                        "default": "WhatsApp ilə sifariş et"
+                      },
+                      "footerText": {
+                        "type": "string",
+                        "default": "Bütün hüquqlar qorunur."
+                      },
+                      "showAdminLink": {
+                        "type": "boolean",
+                        "default": true
+                      }
+                    }
+                  },
+                  "revision": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Saved settings and new revision"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Admin token required"
+          },
+          "403": {
+            "description": "Origin rejected"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Revision conflict; reload current settings"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal error"
+          },
+          "503": {
+            "description": "Service not configured"
+          }
+        }
+      }
+    },
+    "/api/checkout": {
+      "post": {
+        "summary": "Prepare WhatsApp order draft using current prices and configured phone number",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "items"
+                ],
+                "properties": {
+                  "items": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 30,
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "quantity"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 99
+                        },
+                        "size": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 10000,
+                          "description": "Selected ml; omitted uses base size"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "WhatsApp compose URL and total",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string"
+                    },
+                    "total": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Admin token required"
+          },
+          "403": {
+            "description": "Origin rejected"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Product missing or out of stock"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "415": {
+            "description": "Unsupported content type"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal error"
+          },
+          "503": {
+            "description": "Service not configured"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "brand",
+          "price",
+          "size",
+          "gender",
+          "family",
+          "notes",
+          "description",
+          "image",
+          "available"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
+          },
+          "brand": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
+          },
+          "price": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "Kişi",
+              "Qadın",
+              "Uniseks"
+            ]
+          },
+          "family": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 5000
+          },
+          "image": {
+            "type": "string",
+            "description": "Empty or URL returned by /api/upload"
+          },
+          "available": {
+            "type": "boolean"
+          },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "",
+              "Avropa",
+              "Ərəb"
+            ]
+          },
+          "seasons": {
+            "type": "array",
+            "uniqueItems": true,
+            "maxItems": 4,
+            "items": {
+              "type": "string",
+              "enum": [
+                "Yaz",
+                "Yay",
+                "Payız",
+                "Qış"
+              ]
+            }
+          },
+          "variants": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "size",
+                "price",
+                "available"
+              ],
+              "properties": {
+                "size": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10000
+                },
+                "price": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000
+                },
+                "available": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Brand": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "description",
+          "image",
+          "featured",
+          "sortOrder"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "image": {
+            "type": "string"
+          },
+          "featured": {
+            "type": "boolean"
+          },
+          "sortOrder": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9999
+          }
+        }
+      },
+      "SiteSettings": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "siteName",
+          "tagline",
+          "logoImage",
+          "faviconImage",
+          "seoTitle",
+          "seoDescription",
+          "showAnnouncement",
+          "announcement",
+          "navCollection",
+          "navBrands",
+          "navAbout",
+          "navContact",
+          "showHero",
+          "heroEyebrow",
+          "heroTitle",
+          "heroEmphasis",
+          "heroDescription",
+          "heroButton",
+          "heroBadge",
+          "heroLocation",
+          "heroCaption",
+          "heroBottleName",
+          "heroImage",
+          "heroImageAlt",
+          "heroArtLabel",
+          "heroArtType",
+          "showBrands",
+          "brandsHeading",
+          "collectionEyebrow",
+          "collectionTitle",
+          "collectionDescription",
+          "sidebarCaption",
+          "sidebarQuote",
+          "showDemoNote",
+          "demoNote",
+          "showAbout",
+          "aboutEyebrow",
+          "aboutTitle",
+          "aboutEmphasis",
+          "aboutText",
+          "aboutTextExtra",
+          "aboutButton",
+          "aboutImage",
+          "showContact",
+          "contactTitle",
+          "contactText",
+          "address",
+          "phone",
+          "email",
+          "instagram",
+          "whatsappNumber",
+          "orderIntro",
+          "orderButton",
+          "cartButton",
+          "checkoutButton",
+          "footerText",
+          "showAdminLink"
+        ],
+        "properties": {
+          "siteName": {
+            "type": "string",
+            "default": "Incense Parfume"
+          },
+          "tagline": {
+            "type": "string",
+            "default": "ƏTİR BUTİKİ"
+          },
+          "logoImage": {
+            "type": "string",
+            "default": ""
+          },
+          "faviconImage": {
+            "type": "string",
+            "default": ""
+          },
+          "seoTitle": {
+            "type": "string",
+            "default": "Incense Parfume — Parfüm mağazası"
+          },
+          "seoDescription": {
+            "type": "string",
+            "default": "Seçilmiş parfümlər. Öz ətrinizi kəşf edin."
+          },
+          "showAnnouncement": {
+            "type": "boolean",
+            "default": true
+          },
+          "announcement": {
+            "type": "string",
+            "default": ""
+          },
+          "navCollection": {
+            "type": "string",
+            "default": "Kolleksiya"
+          },
+          "navBrands": {
+            "type": "string",
+            "default": "Brendlər"
+          },
+          "navAbout": {
+            "type": "string",
+            "default": "Haqqımızda"
+          },
+          "navContact": {
+            "type": "string",
+            "default": "Əlaqə"
+          },
+          "showHero": {
+            "type": "boolean",
+            "default": true
+          },
+          "heroEyebrow": {
+            "type": "string",
+            "default": "PARFÜM MAĞAZASI"
+          },
+          "heroTitle": {
+            "type": "string",
+            "default": "Parfüm"
+          },
+          "heroEmphasis": {
+            "type": "string",
+            "default": "kolleksiyası"
+          },
+          "heroDescription": {
+            "type": "string",
+            "default": "Avropa və ərəb ətirlərini seçin."
+          },
+          "heroButton": {
+            "type": "string",
+            "default": "Kolleksiyanı kəşf et"
+          },
+          "heroBadge": {
+            "type": "string",
+            "default": "NİŞ & DİZAYNER PARFÜMLƏRİ"
+          },
+          "heroLocation": {
+            "type": "string",
+            "default": "BAKI, AZƏRBAYCAN"
+          },
+          "heroCaption": {
+            "type": "string",
+            "default": ""
+          },
+          "heroBottleName": {
+            "type": "string",
+            "default": "L'ESSENCE"
+          },
+          "heroImage": {
+            "type": "string",
+            "default": ""
+          },
+          "heroImageAlt": {
+            "type": "string",
+            "default": "Ətir kolleksiyası"
+          },
+          "heroArtLabel": {
+            "type": "string",
+            "default": "INCENSE PARFUME"
+          },
+          "heroArtType": {
+            "type": "string",
+            "default": "EAU DE PARFUM"
+          },
+          "showBrands": {
+            "type": "boolean",
+            "default": true
+          },
+          "brandsHeading": {
+            "type": "string",
+            "default": "ƏTİR DÜNYASININ İMZALARI"
+          },
+          "collectionEyebrow": {
+            "type": "string",
+            "default": ""
+          },
+          "collectionTitle": {
+            "type": "string",
+            "default": "Parfümlər"
+          },
+          "collectionDescription": {
+            "type": "string",
+            "default": ""
+          },
+          "sidebarCaption": {
+            "type": "string",
+            "default": ""
+          },
+          "sidebarQuote": {
+            "type": "string",
+            "default": ""
+          },
+          "showDemoNote": {
+            "type": "boolean",
+            "default": true
+          },
+          "demoNote": {
+            "type": "string",
+            "default": "Nümunə kolleksiya: ilkin qiymətlər və flakon təsvirləri təqdimat üçündür."
+          },
+          "showAbout": {
+            "type": "boolean",
+            "default": true
+          },
+          "aboutEyebrow": {
+            "type": "string",
+            "default": ""
+          },
+          "aboutTitle": {
+            "type": "string",
+            "default": "Haqqımızda"
+          },
+          "aboutEmphasis": {
+            "type": "string",
+            "default": ""
+          },
+          "aboutText": {
+            "type": "string",
+            "default": ""
+          },
+          "aboutTextExtra": {
+            "type": "string",
+            "default": ""
+          },
+          "aboutButton": {
+            "type": "string",
+            "default": "Kolleksiyaya bax"
+          },
+          "aboutImage": {
+            "type": "string",
+            "default": ""
+          },
+          "showContact": {
+            "type": "boolean",
+            "default": true
+          },
+          "contactTitle": {
+            "type": "string",
+            "default": "Bizimlə əlaqə"
+          },
+          "contactText": {
+            "type": "string",
+            "default": "Ətir seçiminizdə sizə kömək edək."
+          },
+          "address": {
+            "type": "string",
+            "default": ""
+          },
+          "phone": {
+            "type": "string",
+            "default": ""
+          },
+          "email": {
+            "type": "string",
+            "default": ""
+          },
+          "instagram": {
+            "type": "string",
+            "default": ""
+          },
+          "whatsappNumber": {
+            "type": "string",
+            "default": "994507790084"
+          },
+          "orderIntro": {
+            "type": "string",
+            "default": "Salam! Aşağıdakı parfümləri sifariş etmək istəyirəm:"
+          },
+          "orderButton": {
+            "type": "string",
+            "default": "Sifariş et"
+          },
+          "cartButton": {
+            "type": "string",
+            "default": "Səbətə əlavə et"
+          },
+          "checkoutButton": {
+            "type": "string",
+            "default": "WhatsApp ilə sifariş et"
+          },
+          "footerText": {
+            "type": "string",
+            "default": "Bütün hüquqlar qorunur."
+          },
+          "showAdminLink": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "AdminToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "ADMIN_PASSWORD server secret"
+      }
+    }
+  }
+}

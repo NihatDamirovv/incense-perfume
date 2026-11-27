@@ -1,0 +1,18 @@
+
+# Incense Parfume: only the IP address is allowed on port 8083.
+http://13.49.1.59:8083 {
+    request_body {
+        max_size 6MB
+    }
+    header -Server
+    encode gzip
+    @internal path /cdn-cgi/mf/* /__*
+    respond @internal 404
+    reverse_proxy 127.0.0.1:9083 {
+        header_up -MF-*
+        header_up CF-Connecting-IP {remote_host}
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up Host 13.49.1.59:8083
+    }
+}

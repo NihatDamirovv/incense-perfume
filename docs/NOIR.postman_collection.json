@@ -1,0 +1,432 @@
+{
+  "info": {
+    "name": "Incense Parfume API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:5173"
+    },
+    {
+      "key": "adminToken",
+      "value": ""
+    },
+    {
+      "key": "productId",
+      "value": "demo-1"
+    },
+    {
+      "key": "imageKey",
+      "value": ""
+    },
+    {
+      "key": "brandId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Filter and paginate products",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/products"
+      }
+    },
+    {
+      "name": "Create product",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/products",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Yeni parfüm\",\n  \"brand\": \"Creed\",\n  \"price\": 250,\n  \"size\": 100,\n  \"gender\": \"Uniseks\",\n  \"family\": \"Odunsu\",\n  \"notes\": \"Berqamot · Müşk\",\n  \"description\": \"Parfüm haqqında məlumat\",\n  \"image\": \"\",\n  \"available\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Get product",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/products/{{productId}}"
+      }
+    },
+    {
+      "name": "Replace product",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/products/{{productId}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Yeni parfüm\",\n  \"brand\": \"Creed\",\n  \"price\": 250,\n  \"size\": 100,\n  \"gender\": \"Uniseks\",\n  \"family\": \"Odunsu\",\n  \"notes\": \"Berqamot · Müşk\",\n  \"description\": \"Parfüm haqqında məlumat\",\n  \"image\": \"\",\n  \"available\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Delete product",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/api/products/{{productId}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Brands and product counts",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/brands"
+      }
+    },
+    {
+      "name": "Create an independent brand",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/brands",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Yeni brend\",\n  \"description\": \"\",\n  \"image\": \"\",\n  \"featured\": true,\n  \"sortOrder\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Upload JPG, PNG or WebP (max 5 MB)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/api/upload",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Read uploaded image",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/images/{{imageKey}}"
+      }
+    },
+    {
+      "name": "Verify admin token",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/api/auth/check",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Latest 100 audit records",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/admin/audit",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Database availability and R2 binding configuration",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/health"
+      }
+    },
+    {
+      "name": "UI compatibility: complete catalog",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/catalog"
+      }
+    },
+    {
+      "name": "UI compatibility: create or update based on id",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/catalog",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Yeni parfüm\",\n  \"brand\": \"Creed\",\n  \"price\": 250,\n  \"size\": 100,\n  \"gender\": \"Uniseks\",\n  \"family\": \"Odunsu\",\n  \"notes\": \"Berqamot · Müşk\",\n  \"description\": \"Parfüm haqqında məlumat\",\n  \"image\": \"\",\n  \"available\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "UI compatibility: delete by id in body",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/catalog",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"{{productId}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Update brand and rename linked products",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/brands/{{brandId}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Yeni brend\",\n  \"description\": \"\",\n  \"image\": \"\",\n  \"featured\": true,\n  \"sortOrder\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Delete empty brand",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/api/brands/{{brandId}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get public site settings and revision",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/settings"
+      }
+    },
+    {
+      "name": "Update site settings with optimistic concurrency",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/settings",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"data\": {\n    \"siteName\": \"Incense Parfume\",\n    \"tagline\": \"ƏTİR BUTİKİ\",\n    \"logoImage\": \"\",\n    \"faviconImage\": \"\",\n    \"seoTitle\": \"Incense Parfume — Parfüm mağazası\",\n    \"seoDescription\": \"Seçilmiş parfümlər. Öz ətrinizi kəşf edin.\",\n    \"showAnnouncement\": true,\n    \"announcement\": \"\",\n    \"navCollection\": \"Kolleksiya\",\n    \"navBrands\": \"Brendlər\",\n    \"navAbout\": \"Haqqımızda\",\n    \"navContact\": \"Əlaqə\",\n    \"showHero\": true,\n    \"heroEyebrow\": \"PARFÜM MAĞAZASI\",\n    \"heroTitle\": \"Parfüm\",\n    \"heroEmphasis\": \"kolleksiyası\",\n    \"heroDescription\": \"Avropa və ərəb ətirlərini seçin.\",\n    \"heroButton\": \"Kolleksiyanı kəşf et\",\n    \"heroBadge\": \"NİŞ & DİZAYNER PARFÜMLƏRİ\",\n    \"heroLocation\": \"BAKI, AZƏRBAYCAN\",\n    \"heroCaption\": \"\",\n    \"heroBottleName\": \"L'ESSENCE\",\n    \"heroImage\": \"\",\n    \"heroImageAlt\": \"Ətir kolleksiyası\",\n    \"heroArtLabel\": \"INCENSE PARFUME\",\n    \"heroArtType\": \"EAU DE PARFUM\",\n    \"showBrands\": true,\n    \"brandsHeading\": \"ƏTİR DÜNYASININ İMZALARI\",\n    \"collectionEyebrow\": \"\",\n    \"collectionTitle\": \"Parfümlər\",\n    \"collectionDescription\": \"\",\n    \"sidebarCaption\": \"\",\n    \"sidebarQuote\": \"\",\n    \"showDemoNote\": true,\n    \"demoNote\": \"Nümunə kolleksiya: ilkin qiymətlər və flakon təsvirləri təqdimat üçündür.\",\n    \"showAbout\": true,\n    \"aboutEyebrow\": \"\",\n    \"aboutTitle\": \"Haqqımızda\",\n    \"aboutEmphasis\": \"\",\n    \"aboutText\": \"\",\n    \"aboutTextExtra\": \"\",\n    \"aboutButton\": \"Kolleksiyaya bax\",\n    \"aboutImage\": \"\",\n    \"showContact\": true,\n    \"contactTitle\": \"Bizimlə əlaqə\",\n    \"contactText\": \"Ətir seçiminizdə sizə kömək edək.\",\n    \"address\": \"\",\n    \"phone\": \"\",\n    \"email\": \"\",\n    \"instagram\": \"\",\n    \"whatsappNumber\": \"994507790084\",\n    \"orderIntro\": \"Salam! Aşağıdakı parfümləri sifariş etmək istəyirəm:\",\n    \"orderButton\": \"Sifariş et\",\n    \"cartButton\": \"Səbətə əlavə et\",\n    \"checkoutButton\": \"WhatsApp ilə sifariş et\",\n    \"footerText\": \"Bütün hüquqlar qorunur.\",\n    \"showAdminLink\": true\n  },\n  \"revision\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Prepare WhatsApp order draft using current prices and configured phone number",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/checkout",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"items\": [\n    {\n      \"id\": \"{{productId}}\",\n      \"quantity\": 1\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    }
+  ]
+}
