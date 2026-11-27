@@ -22,12 +22,17 @@ import {
   type SiteSettings,
   type Brand,
 } from "../site-content";
-const blank: Product = {
+type ProductDraft = Omit<Product, "size" | "price" | "variants"> & {
+  size: number | string;
+  price: number | string;
+  variants?: { size: number | string; price: number | string; available: boolean }[];
+};
+const blank: ProductDraft = {
   id: "",
   name: "",
   brand: "",
-  price: 0,
-  size: 0,
+  price: "",
+  size: "",
   gender: "Uniseks",
   family: "",
   notes: "",
@@ -42,7 +47,7 @@ export default function Admin() {
   const [password, setPassword] = useState(""),
     [authed, setAuthed] = useState(false),
     [items, setItems] = useState<Product[]>([]),
-    [edit, setEdit] = useState<Product | null>(null),
+    [edit, setEdit] = useState<ProductDraft | null>(null),
     [message, setMessage] = useState(""),
     [busy, setBusy] = useState(false),
     [search, setSearch] = useState(""),
@@ -105,7 +110,14 @@ export default function Admin() {
       const r = await fetch("/api/catalog", {
         method: "POST",
         headers,
-        body: JSON.stringify(edit),
+        body: JSON.stringify({
+          ...edit,
+          size: Number(edit!.size),
+          price: Number(edit!.price),
+          variants: (edit!.variants || []).map((v) => ({
+            ...v, size: Number(v.size), price: Number(v.price),
+          })),
+        }),
       });
       const data = (await r.json()) as { error?: string; url: string };
       if (!r.ok) throw Error(data.error);
@@ -497,9 +509,22 @@ export default function Admin() {
                       əlavə etsəniz, müştəri yalnız bu iki həcmi görəcək.
                       100 ml və ya başqa həcm avtomatik əlavə edilmir.
                     </p>
-                  <div className="field-row">
+                  <div className="variant-row">
                     <label>
-                      İlk həcmin qiyməti (₼)
+                      Həcm (ml)
+                      <input
+                        required
+                        type="number"
+                        min="1"
+                        value={edit.size}
+                        placeholder="Məsələn, 50"
+                        onChange={(e) =>
+                          setEdit({ ...edit, size: e.target.value })
+                        }
+                      />
+                    </label>
+                    <label>
+                      Qiymət (₼)
                       <input
                         required
                         type="number"
@@ -507,20 +532,7 @@ export default function Admin() {
                         step="0.01"
                         value={edit.price}
                         onChange={(e) =>
-                          setEdit({ ...edit, price: Number(e.target.value) })
-                        }
-                      />
-                    </label>
-                    <label>
-                      İlk həcm (ml)
-                      <input
-                        required
-                        type="number"
-                        min="1"
-                        value={edit.size || ""}
-                        placeholder="Məsələn, 50"
-                        onChange={(e) =>
-                          setEdit({ ...edit, size: Number(e.target.value) })
+                          setEdit({ ...edit, price: e.target.value })
                         }
                       />
                     </label>
@@ -536,14 +548,14 @@ export default function Admin() {
                             min="1"
                             max="10000"
                             required
-                            value={v.size || ""}
+                            value={v.size}
                             placeholder="Məsələn, 55"
                             onChange={(e) =>
                               setEdit({
                                 ...edit,
                                 variants: edit.variants!.map((x, j) =>
                                   j === i
-                                    ? { ...x, size: Number(e.target.value) }
+                                    ? { ...x, size: e.target.value }
                                     : x,
                                 ),
                               })
@@ -564,7 +576,7 @@ export default function Admin() {
                                 ...edit,
                                 variants: edit.variants!.map((x, j) =>
                                   j === i
-                                    ? { ...x, price: Number(e.target.value) }
+                                    ? { ...x, price: e.target.value }
                                     : x,
                                 ),
                               })
@@ -612,7 +624,7 @@ export default function Admin() {
                           ...edit,
                           variants: [
                             ...(edit.variants || []),
-                            { size: 0, price: 0, available: true },
+                            { size: "", price: "", available: true },
                           ],
                         })
                       }

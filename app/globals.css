@@ -40,7 +40,7 @@ button {
 }
 button:disabled {
   opacity: 0.5;
-  cursor: wait;
+  cursor: default;
 }
 a {
   text-decoration: none;
@@ -2338,7 +2338,7 @@ footer > a:last-child {
 }
 .variant-row {
   display: grid;
-  grid-template-columns: 1fr 1fr auto auto;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 76px 32px;
   align-items: center;
   gap: 12px;
   margin-bottom: 16px;

@@ -131,7 +131,7 @@ export default function ProductDetail({
           {!!p.seasons?.length && (
             <>
               <dt>Fəsillər</dt>
-              <dd>{p.seasons.join(" · ")}</dd>
+              <dd>{p.seasons.length === 4 ? "4 fəsil" : p.seasons.join(" · ")}</dd>
             </>
           )}
           <dt>Həcmlər</dt>

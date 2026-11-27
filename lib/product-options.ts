@@ -1,7 +1,7 @@
 import type { Product } from "../app/data";
 export const seasons = ["Yaz", "Yay", "Payız", "Qış"] as const;
 export const origins = ["Avropa", "Ərəb"] as const;
-export function productOrigin(p: Product): string {
+export function productOrigin(p: Pick<Product, "origin" | "brand">): string {
   if (p.origin !== undefined) return p.origin;
   return [
     "chanel",
