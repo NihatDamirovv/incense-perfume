@@ -100,7 +100,7 @@ const paths = {
         },
         description:
           name === "sort"
-            ? "default, price_asc, price_desc, name"
+            ? "default, price_asc, price_desc"
             : name === "limit"
               ? "1–100; default 12"
               : name === "page"

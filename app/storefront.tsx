@@ -261,9 +261,7 @@ export default function Storefront({
         ? a.price - b.price
         : sort === "high"
           ? b.price - a.price
-          : sort === "name"
-            ? a.name.localeCompare(b.name)
-            : 0,
+          : 0,
     );
   const reset = () => {
     window.location.assign("/kolleksiya");
@@ -675,7 +673,6 @@ export default function Storefront({
                     <option value="selected">Standart</option>
                     <option value="low">Qiymət: azdan çoxa</option>
                     <option value="high">Qiymət: çoxdan aza</option>
-                    <option value="name">Ada görə</option>
                   </select>
                 </label>
               </div>

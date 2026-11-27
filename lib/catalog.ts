@@ -103,7 +103,7 @@ export async function queryProducts(url: URL) {
     min < 0 ||
     Number.isNaN(max) ||
     max < min ||
-    !["default", "price_asc", "price_desc", "name"].includes(sort)
+    !["default", "price_asc", "price_desc"].includes(sort)
   )
     throw new ApiError(
       400,
@@ -130,7 +130,6 @@ export async function queryProducts(url: URL) {
   );
   if (sort === "price_asc") rows.sort((a, b) => a.price - b.price);
   if (sort === "price_desc") rows.sort((a, b) => b.price - a.price);
-  if (sort === "name") rows.sort((a, b) => a.name.localeCompare(b.name));
   return {
     data: rows.slice((page - 1) * limit, page * limit),
     pagination: {

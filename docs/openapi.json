@@ -90,7 +90,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "default, price_asc, price_desc, name"
+            "description": "default, price_asc, price_desc"
           },
           {
             "name": "page",

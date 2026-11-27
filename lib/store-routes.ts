@@ -36,7 +36,7 @@ export function parseFilters(
     brand: value("brend") || "Hamısı",
     gender: categories[category || value("kateqoriya")] || "Hamısı",
     query: value("q"),
-    sort: ["low", "high", "name"].includes(value("sirala"))
+    sort: ["low", "high"].includes(value("sirala"))
       ? value("sirala")
       : "selected",
     favorites: value("secilmis") === "1",
