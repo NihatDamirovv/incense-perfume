@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import Bottle from "./bottle";
 import ProductDetail from "./product-detail";
-import { productOrigin, seasons, matchesPrice } from "../lib/product-options";
+import { productOrigin, seasons, matchesPrice, productOptions } from "../lib/product-options";
 import { type Product } from "./data";
 import { defaultSettings, type SiteSettings, type Brand } from "./site-content";
 import { useCart, CartPanel, checkout, type CartItem } from "./cart";
@@ -777,10 +777,15 @@ export default function Storefront({
                           {p.name}
                         </a>
                         <div className="product-bottom">
-                          <span>Eau de Parfum · {p.size} ml</span>
-                          <strong>{p.price} ₼</strong>
+                          <span>Eau de Parfum · {productOptions(p).map((v) => v.size).join(" / ")} ml</span>
+                          <strong>{Math.min(...productOptions(p).map((v) => v.price))} ₼{p.variants?.length ? "-dən" : ""}</strong>
                         </div>
                         <div className="product-actions">
+                          {p.variants?.length ? (
+                            <a className="button" href={productUrl(p.id, filters)} target="_blank" rel="noopener noreferrer">
+                              Həcm seçin
+                            </a>
+                          ) : <>
                           <button
                             className="button"
                             disabled={!p.available || ordering}
@@ -809,6 +814,7 @@ export default function Storefront({
                               }
                             </span>
                           </button>
+                          </>}
                         </div>
                       </article>
                     ))}

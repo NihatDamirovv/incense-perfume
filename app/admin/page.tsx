@@ -27,7 +27,7 @@ const blank: Product = {
   name: "",
   brand: "",
   price: 0,
-  size: 100,
+  size: 0,
   gender: "Uniseks",
   family: "",
   notes: "",
@@ -321,7 +321,7 @@ export default function Admin() {
                             </div>
                           </td>
                           <td>{p.brand}</td>
-                          <td>{p.size} ml</td>
+                          <td>{[p.size, ...(p.variants || []).map((v) => v.size)].join(" / ")} ml</td>
                           <td>{p.price} ₼</td>
                           <td>
                             <span className="stock">
@@ -454,33 +454,6 @@ export default function Admin() {
                       ))}
                     </datalist>
                   </label>
-                  <div className="field-row">
-                    <label>
-                      Qiymət (₼)
-                      <input
-                        required
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value={edit.price}
-                        onChange={(e) =>
-                          setEdit({ ...edit, price: Number(e.target.value) })
-                        }
-                      />
-                    </label>
-                    <label>
-                      Həcm (ml)
-                      <input
-                        required
-                        type="number"
-                        min="1"
-                        value={edit.size}
-                        onChange={(e) =>
-                          setEdit({ ...edit, size: Number(e.target.value) })
-                        }
-                      />
-                    </label>
-                  </div>
                   <label>
                     Mənşə
                     <select
@@ -517,11 +490,42 @@ export default function Admin() {
                     ))}
                   </fieldset>
                   <fieldset className="variant-editor">
-                    <legend>Əlavə həcmlər və qiymətlər</legend>
+                    <legend>Həcmlər və qiymətlər</legend>
                     <p>
-                      Yuxarıdakı əsas həcmə əlavə seçimlər. Hər həcm yalnız bir
-                      dəfə yazılmalıdır.
+                      Hər ətri yalnız bir dəfə əlavə edin. Əlinizdə olan həcmləri
+                      və hər birinin qiymətini burada yazın. Məsələn, 50 və 55 ml
+                      əlavə etsəniz, müştəri yalnız bu iki həcmi görəcək.
+                      100 ml və ya başqa həcm avtomatik əlavə edilmir.
                     </p>
+                  <div className="field-row">
+                    <label>
+                      İlk həcmin qiyməti (₼)
+                      <input
+                        required
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={edit.price}
+                        onChange={(e) =>
+                          setEdit({ ...edit, price: Number(e.target.value) })
+                        }
+                      />
+                    </label>
+                    <label>
+                      İlk həcm (ml)
+                      <input
+                        required
+                        type="number"
+                        min="1"
+                        value={edit.size || ""}
+                        placeholder="Məsələn, 50"
+                        onChange={(e) =>
+                          setEdit({ ...edit, size: Number(e.target.value) })
+                        }
+                      />
+                    </label>
+                  </div>
+
                     {(edit.variants || []).map((v, i) => (
                       <div className="variant-row" key={i}>
                         <label>
@@ -532,7 +536,8 @@ export default function Admin() {
                             min="1"
                             max="10000"
                             required
-                            value={v.size}
+                            value={v.size || ""}
+                            placeholder="Məsələn, 55"
                             onChange={(e) =>
                               setEdit({
                                 ...edit,

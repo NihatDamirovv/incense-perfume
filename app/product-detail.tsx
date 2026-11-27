@@ -164,7 +164,7 @@ export default function ProductDetail({
                 <p>{x.brand}</p>
                 <h3>{x.name}</h3>
                 <p>
-                  {x.size} ml · {x.price} ₼
+                  {productOptions(x).map((v) => v.size).join(" / ")} ml · {Math.min(...productOptions(x).map((v) => v.price))} ₼{x.variants?.length ? "-dən" : ""}
                 </p>
               </a>
             ))}

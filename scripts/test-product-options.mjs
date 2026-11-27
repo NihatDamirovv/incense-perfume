@@ -57,4 +57,9 @@ assert.equal(
   filtersFromUrl(new URL("http://localhost/kolleksiya?min=NaN&max=-4")).min,
   "",
 );
-console.log("PASS 13 product option and filter checks");
+const customVolumes = { ...p, size: 50, price: 80, variants: [{ size: 55, price: 85, available: true }] };
+assert.deepEqual(productOptions(customVolumes).map((v) => v.size), [50, 55]);
+assert.equal(optionFor(customVolumes, 100), undefined);
+assert.equal(optionFor(customVolumes, 55).price, 85);
+assert.deepEqual(productOptions({ ...customVolumes, variants: [] }).map((v) => v.size), [50]);
+console.log("PASS 17 product option and filter checks");
