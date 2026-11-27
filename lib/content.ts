@@ -29,6 +29,12 @@ export const settingsSchema = z
     heroImage: imageSchema,
     aboutImage: imageSchema,
     email: z.string().email().or(z.literal("")),
+    tiktok: z.string().url().refine((s) => {
+      try {
+        const u = new URL(s);
+        return u.protocol === "https:" && (u.hostname === "tiktok.com" || u.hostname.endsWith(".tiktok.com"));
+      } catch { return false; }
+    }, "Etibarlı HTTPS TikTok linki yazın").or(z.literal("")).default(""),
     instagram: z
       .string()
       .url()

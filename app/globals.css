@@ -2481,3 +2481,4 @@ footer > a:last-child {
   border-bottom: 1px solid #191919;
   padding-bottom: 5px;
 }
+.about-social-links {display:flex;gap:24px;flex-wrap:wrap;margin-top:24px}.about-social-links a {font-size:16px;text-decoration:underline;text-underline-offset:5px}

@@ -50,6 +50,7 @@ export const defaultSettings = {
   phone: "",
   email: "",
   instagram: "",
+  tiktok: "",
   whatsappNumber: "994507790084",
   orderIntro: "Salam! Aşağıdakı parfümləri sifariş etmək istəyirəm:",
   orderButton: "Sifariş et",
@@ -210,6 +211,7 @@ export const contentGroups: {
       { key: "phone", label: "Əlaqə telefonu" },
       { key: "email", label: "E-poçt", kind: "email" },
       { key: "instagram", label: "Instagram URL", kind: "url" },
+      { key: "tiktok", label: "TikTok URL", kind: "url" },
     ],
   },
   {

@@ -890,6 +890,10 @@ export default function Storefront({
                   </span>
                 }
               </a>
+              <div className="about-social-links">
+                {settings.instagram && <a data-edit="instagram" href={settings.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>}
+                {settings.tiktok && <a data-edit="tiktok" href={settings.tiktok} target="_blank" rel="noopener noreferrer">TikTok</a>}
+              </div>
             </div>
           </section>
         )}
@@ -962,6 +966,7 @@ export default function Storefront({
                   Instagram
                 </a>
               )}
+              {settings.tiktok && <a data-edit="tiktok" href={settings.tiktok} target="_blank" rel="noopener noreferrer">TikTok</a>}
             </div>
           </section>
         )}

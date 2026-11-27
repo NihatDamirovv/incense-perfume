@@ -1155,6 +1155,7 @@
                       "phone",
                       "email",
                       "instagram",
+                      "tiktok",
                       "whatsappNumber",
                       "orderIntro",
                       "orderButton",
@@ -1361,6 +1362,10 @@
                         "default": ""
                       },
                       "instagram": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "tiktok": {
                         "type": "string",
                         "default": ""
                       },
@@ -1746,6 +1751,7 @@
           "phone",
           "email",
           "instagram",
+          "tiktok",
           "whatsappNumber",
           "orderIntro",
           "orderButton",
@@ -1952,6 +1958,10 @@
             "default": ""
           },
           "instagram": {
+            "type": "string",
+            "default": ""
+          },
+          "tiktok": {
             "type": "string",
             "default": ""
           },
